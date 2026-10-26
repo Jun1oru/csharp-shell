@@ -9,7 +9,7 @@ class Program
             string userInput = Console.ReadLine();
             if (userInput == "exit")
             {
-                return;
+                break;
             }
             Console.WriteLine($"{userInput}: command not found");
         }
