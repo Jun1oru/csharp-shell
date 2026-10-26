@@ -7,6 +7,6 @@ class Program
 
         string userInput = Console.ReadLine();
 
-        Console.WriteLine($"{{userInput}}: command not found");
+        Console.WriteLine($"{userInput}: command not found");
     }
 }
