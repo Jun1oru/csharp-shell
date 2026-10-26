@@ -11,7 +11,14 @@ class Program
             {
                 break;
             }
-            Console.WriteLine($"{userInput}: command not found");
+            else if (userInput.StartsWith("echo "))
+            {
+                Console.WriteLine(userInput[5..]);
+            }
+            else
+            {
+                Console.WriteLine($"{userInput}: command not found");
+            }
         }
     }
 }
