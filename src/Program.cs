@@ -30,20 +30,30 @@ class Program
                 }
                 else
                 {
-                    bool found = false;
-                    foreach (string folderPath in folders)
-                    {
-                        string fullPath = Path.Combine(folderPath, arg);
+                    var result = FindExecutableInPath(arg, folders);
 
-                        if (File.Exists(fullPath) &&
-                            File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
-                        {
-                            found = true;
-                            Console.WriteLine($"{arg} is {fullPath}");
-                        }
-                    }
-                    if (found == false)
+                    if (result == null)
+                    {
                         Console.WriteLine($"{arg}: not found");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{arg} is {result}");
+                    }
+                    // bool found = false;
+                    // foreach (string folderPath in folders)
+                    // {
+                    //     string fullPath = Path.Combine(folderPath, arg);
+
+                    //     if (File.Exists(fullPath) &&
+                    //         File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
+                    //     {
+                    //         found = true;
+                    //         Console.WriteLine($"{arg} is {fullPath}");
+                    //     }
+                    // }
+                    // if (found == false)
+                    //     Console.WriteLine($"{arg}: not found");
                 }
             }
             else if (userInput == "pwd")
