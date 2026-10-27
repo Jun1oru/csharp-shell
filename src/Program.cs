@@ -61,7 +61,7 @@ class Program
                 }
                 else
                 {
-                    Process.Start(result, inputSplit[1..]).WaitForExit();
+                    Process.Start(command, inputSplit[1..]).WaitForExit();
                 }
             }
         }
