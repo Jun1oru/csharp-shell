@@ -36,7 +36,6 @@ class Program
                             File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
                         {
                             Console.WriteLine($"{arg} is {fullPath}");
-                            return;
                         }
                     }
                     Console.WriteLine($"{arg}: not found");
