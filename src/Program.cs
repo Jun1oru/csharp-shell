@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 class Program
 {
     static void Main()
@@ -46,7 +48,24 @@ class Program
             }
             else
             {
-                Console.WriteLine($"{userInput}: command not found");
+                bool found = false;
+                string[] inputSplit = userInput.Split(" ");
+                string command = inputSplit[0].Trim();
+                foreach (string folderPath in folders)
+                {
+                    string fullPath = Path.Combine(folderPath, command);
+
+                    if (File.Exists(fullPath) &&
+                        File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
+                    {
+                        found = true;
+                        Process.Start(command, inputSplit[1..]).WaitForExit();
+                    }
+                }
+                if (found == false)
+                {
+                    Console.WriteLine($"{userInput}: command not found");
+                }
             }
         }
     }
