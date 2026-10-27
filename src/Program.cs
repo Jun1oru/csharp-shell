@@ -40,20 +40,6 @@ class Program
                     {
                         Console.WriteLine($"{arg} is {result}");
                     }
-                    // bool found = false;
-                    // foreach (string folderPath in folders)
-                    // {
-                    //     string fullPath = Path.Combine(folderPath, arg);
-
-                    //     if (File.Exists(fullPath) &&
-                    //         File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
-                    //     {
-                    //         found = true;
-                    //         Console.WriteLine($"{arg} is {fullPath}");
-                    //     }
-                    // }
-                    // if (found == false)
-                    //     Console.WriteLine($"{arg}: not found");
                 }
             }
             else if (userInput == "pwd")
@@ -75,23 +61,8 @@ class Program
                 }
                 else
                 {
-                    Process.Start(command, inputSplit[1..]).WaitForExit();
+                    Process.Start(result, inputSplit[1..]).WaitForExit();
                 }
-                // foreach (string folderPath in folders)
-                // {
-                //     string fullPath = Path.Combine(folderPath, command);
-
-                //     if (File.Exists(fullPath) &&
-                //         File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
-                //     {
-                //         found = true;
-                //         Process.Start(command, inputSplit[1..]).WaitForExit();
-                //     }
-                // }
-                // if (found == false)
-                // {
-                //     Console.WriteLine($"{userInput}: command not found");
-                // }
             }
         }
     }
