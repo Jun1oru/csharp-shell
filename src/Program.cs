@@ -4,7 +4,7 @@ class Program
 {
     static void Main()
     {
-        List<string> builtIn = ["exit", "echo", "type"];
+        List<string> builtIn = ["exit", "echo", "type", "pwd"];
         string PATH = Environment.GetEnvironmentVariable("PATH");
         string[] folders = PATH.Split(Path.PathSeparator) ?? [];
 
@@ -45,6 +45,11 @@ class Program
                     if (found == false)
                         Console.WriteLine($"{arg}: not found");
                 }
+            }
+            else if (userInput == "pwd")
+            {
+                string folder = Directory.GetCurrentDirectory();
+                Console.WriteLine($"{folder}");
             }
             else
             {
