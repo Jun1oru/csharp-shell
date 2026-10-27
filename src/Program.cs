@@ -53,25 +53,51 @@ class Program
             }
             else
             {
-                bool found = false;
+                // bool found = false;
                 string[] inputSplit = userInput.Split(" ");
                 string command = inputSplit[0].Trim();
-                foreach (string folderPath in folders)
-                {
-                    string fullPath = Path.Combine(folderPath, command);
 
-                    if (File.Exists(fullPath) &&
-                        File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
-                    {
-                        found = true;
-                        Process.Start(command, inputSplit[1..]).WaitForExit();
-                    }
-                }
-                if (found == false)
+                var result = FindExecutableInPath(command, folders);
+
+                if (result == null)
                 {
                     Console.WriteLine($"{userInput}: command not found");
                 }
+                else
+                {
+                    Process.Start(command, inputSplit[1..]).WaitForExit();
+                }
+                // foreach (string folderPath in folders)
+                // {
+                //     string fullPath = Path.Combine(folderPath, command);
+
+                //     if (File.Exists(fullPath) &&
+                //         File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
+                //     {
+                //         found = true;
+                //         Process.Start(command, inputSplit[1..]).WaitForExit();
+                //     }
+                // }
+                // if (found == false)
+                // {
+                //     Console.WriteLine($"{userInput}: command not found");
+                // }
             }
         }
+    }
+
+    public static string? FindExecutableInPath(string command, string[] folders)
+    {
+        foreach (string folderPath in folders)
+        {
+            string fullPath = Path.Combine(folderPath, command);
+
+            if (File.Exists(fullPath) &&
+                        File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
+            {
+                return fullPath;
+            }
+        }
+        return null;
     }
 }
