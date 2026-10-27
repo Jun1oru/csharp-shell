@@ -28,6 +28,7 @@ class Program
                 }
                 else
                 {
+                    bool found = false;
                     foreach (string folderPath in folders)
                     {
                         string fullPath = Path.Combine(folderPath, arg);
@@ -35,10 +36,12 @@ class Program
                         if (File.Exists(fullPath) &&
                             File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
                         {
+                            found = true;
                             Console.WriteLine($"{arg} is {fullPath}");
                         }
                     }
-                    Console.WriteLine($"{arg}: not found");
+                    if (found == false)
+                        Console.WriteLine($"{arg}: not found");
                 }
             }
             else
