@@ -4,7 +4,7 @@ class Program
     {
         List<string> builtIn = ["exit", "echo", "type"];
         string PATH = Environment.GetEnvironmentVariable("PATH");
-        IEnumerable<string> folders = PATH.Split(Path.PathSeparator);
+        string[] folders = PATH.Split(Path.PathSeparator) ?? [];
 
         while (true)
         {
@@ -30,22 +30,13 @@ class Program
                 {
                     foreach (string folderPath in folders)
                     {
-                        DirectoryInfo directory = new DirectoryInfo(folderPath);
-                        try
-                        {
-                            var files = directory.GetFiles("");
-                            foreach (var file in files)
-                            {
-                                var filePath = Path.Combine(folderPath, file.Name);
-                                if ((File.GetUnixFileMode(filePath) & (UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute)) != 0)
-                                {
-                                    Console.WriteLine($"{arg} is {filePath}");
-                                }
-                            }
-                        }
-                        catch (DirectoryNotFoundException ex)
-                        {
+                        string fullPath = Path.Combine(folderPath, arg);
 
+                        if (File.Exists(fullPath) &&
+                            File.GetUnixFileMode(fullPath).HasFlag(UnixFileMode.GroupExecute | UnixFileMode.UserExecute | UnixFileMode.OtherExecute))
+                        {
+                            Console.WriteLine($"{arg} is {fullPath}");
+                            return;
                         }
                     }
                     Console.WriteLine($"{arg}: not found");
