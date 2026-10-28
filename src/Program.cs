@@ -81,7 +81,7 @@ class Program
         }
     }
 
-    public static string? FindExecutableInPath(string command, string[] folders)
+    private static string? FindExecutableInPath(string command, string[] folders)
     {
         foreach (string folderPath in folders)
         {
