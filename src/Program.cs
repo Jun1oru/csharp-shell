@@ -46,12 +46,12 @@ class Program
                     }
                 }
             }
-            else if (userInput == "pwd")
+            else if (command == "pwd")
             {
                 string folder = Directory.GetCurrentDirectory();
                 Console.WriteLine($"{folder}");
             }
-            else if (userInput.StartsWith("cd "))
+            else if (command == "cd")
             {
                 string arg = args[0];
                 if (arg.StartsWith('/'))
