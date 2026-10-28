@@ -4,7 +4,7 @@ class Program
 {
     static void Main()
     {
-        List<string> builtIn = ["exit", "echo", "type", "pwd"];
+        List<string> builtIn = ["exit", "echo", "type", "pwd", "cd"];
         string PATH = Environment.GetEnvironmentVariable("PATH");
         string[] folders = PATH.Split(Path.PathSeparator) ?? [];
 
@@ -47,9 +47,23 @@ class Program
                 string folder = Directory.GetCurrentDirectory();
                 Console.WriteLine($"{folder}");
             }
+            else if (userInput.StartsWith("cd "))
+            {
+                string arg = userInput.Split(' ')[1].Trim();
+                if (arg.StartsWith('/'))
+                {
+                    if (Directory.Exists(arg))
+                    {
+                        Directory.SetCurrentDirectory(arg);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"cd: {arg}: No such file or directory");
+                    }
+                }
+            }
             else
             {
-                // bool found = false;
                 string[] inputSplit = userInput.Split(" ");
                 string command = inputSplit[0].Trim();
 
