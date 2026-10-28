@@ -13,17 +13,21 @@ class Program
             Console.Write("$ ");
 
             string userInput = Console.ReadLine();
-            if (userInput == "exit")
+
+            string[] tokens = userInput.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string command = tokens[0];
+            string[] args = tokens[1..];
+            if (command == "exit")
             {
                 break;
             }
-            else if (userInput.StartsWith("echo "))
+            else if (command == "echo")
             {
-                Console.WriteLine(userInput[5..]);
+                Console.WriteLine(string.Join(" ", args));
             }
-            else if (userInput.StartsWith("type "))
+            else if (command == "type")
             {
-                string arg = userInput.Split(' ')[1].Trim();
+                string arg = args[0];
                 if (builtIn.Contains(arg))
                 {
                     Console.WriteLine($"{arg} is a shell builtin");
@@ -49,7 +53,7 @@ class Program
             }
             else if (userInput.StartsWith("cd "))
             {
-                string arg = userInput.Split(' ')[1].Trim();
+                string arg = args[0];
                 if (arg.StartsWith('/'))
                 {
                     if (Directory.Exists(arg))
@@ -64,8 +68,6 @@ class Program
             }
             else
             {
-                string[] inputSplit = userInput.Split(" ");
-                string command = inputSplit[0].Trim();
 
                 var result = FindExecutableInPath(command, folders);
 
@@ -75,7 +77,7 @@ class Program
                 }
                 else
                 {
-                    Process.Start(command, inputSplit[1..]).WaitForExit();
+                    Process.Start(command, args).WaitForExit();
                 }
             }
         }
