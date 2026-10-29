@@ -84,22 +84,14 @@ class Program
 
     private static void HandleCd(string[] args)
     {
-        string arg = args[0];
-        if (arg == "~")
+        var targetPath = (args[0] == "~") ? Environment.GetEnvironmentVariable("HOME") : args[0];
+        if (Directory.Exists(targetPath))
         {
-            string HOME = Environment.GetEnvironmentVariable("HOME");
-            Directory.SetCurrentDirectory(HOME);
+            Directory.SetCurrentDirectory(targetPath);
         }
         else
         {
-            if (Directory.Exists(arg))
-            {
-                Directory.SetCurrentDirectory(arg);
-            }
-            else
-            {
-                Console.WriteLine($"cd: {arg}: No such file or directory");
-            }
+            Console.WriteLine($"cd: {targetPath}: No such file or directory");
         }
     }
 
