@@ -2,11 +2,13 @@ using System.Diagnostics;
 
 class Program
 {
+    static readonly List<string> builtIn = ["exit", "echo", "type", "pwd", "cd"];
+    static readonly string PATH = Environment.GetEnvironmentVariable("PATH");
+    static readonly string[] folders = PATH.Split(Path.PathSeparator) ?? [];
+
     static void Main()
     {
-        List<string> builtIn = ["exit", "echo", "type", "pwd", "cd"];
-        string PATH = Environment.GetEnvironmentVariable("PATH");
-        string[] folders = PATH.Split(Path.PathSeparator) ?? [];
+
 
         while (true)
         {
@@ -23,49 +25,22 @@ class Program
             }
             else if (command == "echo")
             {
-                Console.WriteLine(string.Join(" ", args));
+                HandleEcho(args);
             }
             else if (command == "type")
             {
-                string arg = args[0];
-                if (builtIn.Contains(arg))
-                {
-                    Console.WriteLine($"{arg} is a shell builtin");
-                }
-                else
-                {
-                    var result = FindExecutableInPath(arg, folders);
-
-                    if (result == null)
-                    {
-                        Console.WriteLine($"{arg}: not found");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{arg} is {result}");
-                    }
-                }
+                HandleType(args[0]);
             }
             else if (command == "pwd")
             {
-                string folder = Directory.GetCurrentDirectory();
-                Console.WriteLine($"{folder}");
+                HandlePwd();
             }
             else if (command == "cd")
             {
-                string arg = args[0];
-                if (Directory.Exists(arg))
-                {
-                    Directory.SetCurrentDirectory(arg);
-                }
-                else
-                {
-                    Console.WriteLine($"cd: {arg}: No such file or directory");
-                }
+                HandleCd(args[0]);
             }
             else
             {
-
                 var result = FindExecutableInPath(command, folders);
 
                 if (result == null)
@@ -77,6 +52,50 @@ class Program
                     Process.Start(command, args).WaitForExit();
                 }
             }
+        }
+    }
+
+    private static void HandleEcho(string[] args)
+    {
+        Console.WriteLine(string.Join(" ", args));
+    }
+
+    private static void HandleType(string arg)
+    {
+        if (builtIn.Contains(arg))
+        {
+            Console.WriteLine($"{arg} is a shell builtin");
+        }
+        else
+        {
+            var result = FindExecutableInPath(arg, folders);
+
+            if (result == null)
+            {
+                Console.WriteLine($"{arg}: not found");
+            }
+            else
+            {
+                Console.WriteLine($"{arg} is {result}");
+            }
+        }
+    }
+
+    private static void HandlePwd()
+    {
+        string folder = Directory.GetCurrentDirectory();
+        Console.WriteLine($"{folder}");
+    }
+
+    private static void HandleCd(string arg)
+    {
+        if (Directory.Exists(arg))
+        {
+            Directory.SetCurrentDirectory(arg);
+        }
+        else
+        {
+            Console.WriteLine($"cd: {arg}: No such file or directory");
         }
     }
 
