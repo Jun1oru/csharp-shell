@@ -49,7 +49,7 @@ class Program
                 }
                 else
                 {
-                    Process.Start(command, args).WaitForExit();
+                    Process.Start(result, args).WaitForExit();
                 }
             }
         }
