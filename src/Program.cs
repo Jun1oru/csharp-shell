@@ -9,7 +9,6 @@ class Program
         { "pwd",    HandlePwd },
         { "cd",     HandleCd }
     };
-    // static readonly List<string> builtIn = ["exit", "echo", "type", "pwd", "cd"];
     static readonly string PATH = Environment.GetEnvironmentVariable("PATH");
     static readonly string[] folders = PATH.Split(Path.PathSeparator) ?? [];
 
@@ -111,22 +110,3 @@ class Program
         return null;
     }
 }
-
-
-
-// else if (command == "echo")
-// {
-//     HandleEcho(args);
-// }
-// else if (command == "type")
-// {
-//     HandleType(args);
-// }
-// else if (command == "pwd")
-// {
-//     HandlePwd(args);
-// }
-// else if (command == "cd")
-// {
-//     HandleCd(args);
-// }
