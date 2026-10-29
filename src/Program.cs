@@ -2,14 +2,19 @@ using System.Diagnostics;
 
 class Program
 {
-    static readonly List<string> builtIn = ["exit", "echo", "type", "pwd", "cd"];
+    static readonly Dictionary<string, Action<string[]>> commands = new()
+    {
+        { "echo",   HandleEcho },
+        { "type",   HandleType },
+        { "pwd",    HandlePwd },
+        { "cd",     HandleCd }
+    };
+    // static readonly List<string> builtIn = ["exit", "echo", "type", "pwd", "cd"];
     static readonly string PATH = Environment.GetEnvironmentVariable("PATH");
     static readonly string[] folders = PATH.Split(Path.PathSeparator) ?? [];
 
     static void Main()
     {
-
-
         while (true)
         {
             Console.Write("$ ");
@@ -23,21 +28,10 @@ class Program
             {
                 break;
             }
-            else if (command == "echo")
+
+            if (commands.TryGetValue(command, out var handler))
             {
-                HandleEcho(args);
-            }
-            else if (command == "type")
-            {
-                HandleType(args[0]);
-            }
-            else if (command == "pwd")
-            {
-                HandlePwd();
-            }
-            else if (command == "cd")
-            {
-                HandleCd(args[0]);
+                handler(args);
             }
             else
             {
@@ -49,7 +43,7 @@ class Program
                 }
                 else
                 {
-                    Process.Start(result, args).WaitForExit();
+                    Process.Start(command, args).WaitForExit();
                 }
             }
         }
@@ -60,9 +54,11 @@ class Program
         Console.WriteLine(string.Join(" ", args));
     }
 
-    private static void HandleType(string arg)
+    private static void HandleType(string[] args)
     {
-        if (builtIn.Contains(arg))
+        string arg = args[0];
+
+        if (commands.ContainsKey(arg) || arg == "exit")
         {
             Console.WriteLine($"{arg} is a shell builtin");
         }
@@ -81,14 +77,15 @@ class Program
         }
     }
 
-    private static void HandlePwd()
+    private static void HandlePwd(string[] args)
     {
         string folder = Directory.GetCurrentDirectory();
         Console.WriteLine($"{folder}");
     }
 
-    private static void HandleCd(string arg)
+    private static void HandleCd(string[] args)
     {
+        string arg = args[0];
         if (Directory.Exists(arg))
         {
             Directory.SetCurrentDirectory(arg);
@@ -114,3 +111,22 @@ class Program
         return null;
     }
 }
+
+
+
+// else if (command == "echo")
+// {
+//     HandleEcho(args);
+// }
+// else if (command == "type")
+// {
+//     HandleType(args);
+// }
+// else if (command == "pwd")
+// {
+//     HandlePwd(args);
+// }
+// else if (command == "cd")
+// {
+//     HandleCd(args);
+// }
