@@ -54,16 +54,13 @@ class Program
             else if (command == "cd")
             {
                 string arg = args[0];
-                if (arg.StartsWith('/'))
+                if (Directory.Exists(arg))
                 {
-                    if (Directory.Exists(arg))
-                    {
-                        Directory.SetCurrentDirectory(arg);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"cd: {arg}: No such file or directory");
-                    }
+                    Directory.SetCurrentDirectory(arg);
+                }
+                else
+                {
+                    Console.WriteLine($"cd: {arg}: No such file or directory");
                 }
             }
             else
